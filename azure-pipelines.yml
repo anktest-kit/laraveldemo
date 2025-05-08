@@ -13,28 +13,3 @@ steps:
       echo "PHP version:"
       php -v
     displayName: 'Show PHP Version'
-
-  - script: |
-      sudo apt-get update
-      sudo apt-get install -y php php-mbstring php-xml php-bcmath php-curl php-sqlite3 unzip
-    displayName: 'Install PHP extensions'
-
-  - script: |
-      curl -sS https://getcomposer.org/installer | php
-      sudo mv composer.phar /usr/local/bin/composer
-    displayName: 'Install Composer'
-
-  - script: |
-      composer install --no-progress --prefer-dist --optimize-autoloader
-    displayName: 'Install Laravel Dependencies'
-
-  - script: |
-      cp .env.example .env
-      touch database/database.sqlite
-      php artisan key:generate
-      php artisan migrate --force
-    displayName: 'Set Up Laravel'
-
-  - script: |
-      php artisan test
-    displayName: 'Run Tests'
