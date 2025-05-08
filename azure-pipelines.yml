@@ -1,15 +1,10 @@
+# azure-pipelines.yml
 trigger:
-  - main
+- main  # Replace with your default branch name if it's different
 
 pool:
-  vmImage: ubuntu-latest
-
-variables:
-  DB_CONNECTION: sqlite
-  DB_DATABASE: database/database.sqlite
+  vmImage: 'ubuntu-latest'
 
 steps:
-  - script: |
-      echo "PHP version:"
-      php -v
-    displayName: 'Show PHP Version'
+- script: echo "Hello, Azure Pipelines!"
+  displayName: 'Print greeting'
