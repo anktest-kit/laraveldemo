@@ -1,0 +1,47 @@
+version: '3.8'
+name: ${PROJECT_NAME}  # Define the custom project name
+services:
+  web:
+    #image: php:8.2-apache   
+    build:
+      context: '.'  
+    ports:
+      - 9000:9000
+    volumes:
+      - ./:/var/www/html    
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    deploy:
+      replicas: 1
+
+  # MySQL Service
+  mysql:
+    image: ${MYSQL_IMAGE}
+    #container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./mysql:/var/www/html    
+
+  # Nginx Service (Reverse Proxy) 
+  nginx:
+    image: ${NGINX_IMAGE}    
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./:/var/www/html
+    ports:
+      - "${NGINX_PORT}:${NGINX_PORT}"
+
+  # phpMyAdmin Service
+  phpmyadmin:
+    image: ${PHPMYADMIN_IMAGE}
+    #container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
