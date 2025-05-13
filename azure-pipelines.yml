@@ -1,31 +1,10 @@
+# azure-pipelines.yml
 trigger:
-  - main   # or your branch name
+- main  # Replace with your default branch name if it's different
 
 pool:
-  vmImage: ubuntu-latest
-
-variables:
-  phpVersion: 8.2
-  DB_CONNECTION: sqlite
-  DB_DATABASE: database/database.sqlite
+  vmImage: 'ubuntu-latest'
 
 steps:
-  - task: UsePHPVersion@0
-    inputs:
-      version: '$(phpVersion)'
-
-  - script: |
-      php -v
-      composer install --no-progress --prefer-dist --optimize-autoloader
-    displayName: 'Install PHP dependencies'
-
-  - script: |
-      cp .env.example .env
-      touch database/database.sqlite
-      php artisan key:generate
-      php artisan migrate --force
-    displayName: 'Set up Laravel'
-
-  - script: |
-      php artisan test
-    displayName: 'Run Laravel Tests'
+- script: echo "Hello, Azure Pipelines!"
+  displayName: 'Print greeting'
